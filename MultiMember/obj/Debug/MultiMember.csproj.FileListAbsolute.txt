@@ -1,4 +1,0 @@
-C:\Users\Andrew\EPAM\ASP.NET.1501.Minich.Day3\MultiMember\bin\Debug\MultiMember.dll
-C:\Users\Andrew\EPAM\ASP.NET.1501.Minich.Day3\MultiMember\bin\Debug\MultiMember.pdb
-C:\Users\Andrew\EPAM\ASP.NET.1501.Minich.Day3\MultiMember\obj\Debug\MultiMember.dll
-C:\Users\Andrew\EPAM\ASP.NET.1501.Minich.Day3\MultiMember\obj\Debug\MultiMember.pdb

@@ -1,7 +1,0 @@
-C:\Users\Andrew\EPAM\ASP.NET.1501.Minich.Day3\Opertor+UnitTest\bin\Debug\Opertor+UnitTest.dll
-C:\Users\Andrew\EPAM\ASP.NET.1501.Minich.Day3\Opertor+UnitTest\bin\Debug\Opertor+UnitTest.pdb
-C:\Users\Andrew\EPAM\ASP.NET.1501.Minich.Day3\Opertor+UnitTest\bin\Debug\MultiMember.dll
-C:\Users\Andrew\EPAM\ASP.NET.1501.Minich.Day3\Opertor+UnitTest\bin\Debug\MultiMember.pdb
-C:\Users\Andrew\EPAM\ASP.NET.1501.Minich.Day3\Opertor+UnitTest\obj\Debug\Opertor+UnitTest.csprojResolveAssemblyReference.cache
-C:\Users\Andrew\EPAM\ASP.NET.1501.Minich.Day3\Opertor+UnitTest\obj\Debug\Opertor+UnitTest.dll
-C:\Users\Andrew\EPAM\ASP.NET.1501.Minich.Day3\Opertor+UnitTest\obj\Debug\Opertor+UnitTest.pdb
