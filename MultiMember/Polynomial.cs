@@ -6,34 +6,46 @@ using System.Threading.Tasks;
 
 namespace MultiMember
 {
-    public class Polynomial
+    public sealed class Polynomial
     {
         private double[] factors;
         private int exponent;
+        public double Exponent
+        {
+            get { return exponent; }
+        }
 
         #region Indexer
-        public int this[int number]
+        public double this[int number]
         {
-            set
+            private set
             {
                 if (number >= 0 || number < factors.Length)
                 {
                     this.factors[number] = value;
                 }
             }
+            get
+            {
+                if (number >= 0 || number < factors.Length) return factors[number];
+                return 0;
+            }
         }
         #endregion
 
         #region Constructor
         private Polynomial() { }
-        public Polynomial(string str)
-        {
 
-        }
         public Polynomial(params double[] coefficients)
         {
-            this.factors = coefficients;
+            this.factors = new double[coefficients.Length];
+            coefficients.CopyTo(this.factors, 0);
             this.exponent = coefficients.Length - 1;
+        }
+        public Polynomial(Polynomial polynomial)
+            : this(polynomial.factors)
+        {
+
         }
         #endregion
 
@@ -43,17 +55,17 @@ namespace MultiMember
             StringBuilder result = new StringBuilder();
             for (int i = 0; i < factors.Length - 1; i++)
             {
-                if (factors[i] == 0) continue;
-                if (factors[i] == 1)
+                if (this[i] == 0) continue;
+                if (this[i] == 1)
                 {
                     result.AppendFormat("x^{0}+", exponent - i);
                 }
                 else
                 {
-                    result.AppendFormat("{0}x^{1}+", factors[i], exponent - i);
+                    result.AppendFormat("{0}x^{1}+", this[i], exponent - i);
                 }
             }
-            if (factors[factors.Length - 1] != 0) result.Append(factors[factors.Length - 1]);
+            if (factors[factors.Length - 1] != 0) result.Append(this[factors.Length - 1]);
             else if (result.Length != 0) result.Remove(result.Length - 1, 1);
             else return "0";
             result.Replace("+-", "-");
@@ -65,28 +77,21 @@ namespace MultiMember
         #region Equals
         public override bool Equals(Object obj)
         {
-            if (obj == null || !(obj is Polynomial))
-                return false;
-            else
+            if (obj == null || !(obj is Polynomial)) return false;
+            Polynomial temp = (Polynomial)obj;
+            if (this.factors.Length != temp.factors.Length) return false;
+            for (int i = 0; i < temp.factors.Length; i++)
             {
-                Polynomial temp = (Polynomial)obj;
-                if (this.factors.Length == temp.factors.Length)
-                {
-                    for (int i = 0; i < temp.factors.Length; i++)
-                    {
-                        if (factors[i] != temp.factors[i]) return false;
-                    }
-                    return true;
-                }
-                return false;
+                if (this[i] != temp[i]) return false;
             }
+            return true;
         }
         #endregion
 
         #region GetHashCode
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return factors.GetHashCode();
         }
         #endregion
 
@@ -96,7 +101,7 @@ namespace MultiMember
             Polynomial result = new Polynomial(new double[this.factors.Length - 1]);
             for (int i = 0; i < this.factors.Length - 1; i++)
             {
-                result.factors[i] = this.factors[i] * (this.exponent - i);
+                result[i] = this[i] * (this.Exponent - i);
             }
             return result;
         }
@@ -109,21 +114,23 @@ namespace MultiMember
             double result = 0;
             for (int i = 0; i < factors.Length - 1; i++)
             {
-                result = (result + factors[i]) * number;
+                result = (result + this[i]) * number;
             }
-            result += factors[factors.Length - 1];
+            result += this[factors.Length - 1];
             return result;
-        } 
+        }
         #endregion
 
         #region Operator +
+
         public static Polynomial operator +(Polynomial first, Polynomial second)
         {
+
             double[] result = new double[Math.Max(first.factors.Length, second.factors.Length)];
             first.factors.CopyTo(result, result.Length - first.factors.Length);
             for (int i = second.factors.Length - 1, y = result.Length - 1; i > -1; i--, y--)
             {
-                result[y] += second.factors[i];
+                result[y] += second[i];
             }
             return new Polynomial(result);
         }
@@ -132,13 +139,7 @@ namespace MultiMember
         #region Operator -
         public static Polynomial operator -(Polynomial first, Polynomial second)
         {
-            double[] result = new double[Math.Max(first.factors.Length, second.factors.Length)];
-            first.factors.CopyTo(result, result.Length - first.factors.Length);
-            for (int i = second.factors.Length - 1, y = result.Length - 1; i > -1; i--, y--)
-            {
-                result[y] -= second.factors[i];
-            }
-            return new Polynomial(result);
+            return first + (-second);
         }
         #endregion
 
@@ -150,7 +151,7 @@ namespace MultiMember
             {
                 for (int y = 0; y < second.factors.Length; y++)
                 {
-                    result[i + y] += first.factors[i] * second.factors[y];
+                    result[i + y] += first[i] * second[y];
                 }
             }
             return new Polynomial(result);
@@ -160,12 +161,7 @@ namespace MultiMember
         #region Operator ==
         public static bool operator ==(Polynomial first, Polynomial second)
         {
-            if (first.factors.Length != second.factors.Length) return false;
-            for (int i = 0; i < first.factors.Length; i++)
-            {
-                if (first.factors[i] != second.factors[i]) return false;
-            }
-            return true;
+            return first.Equals(second);
         }
         #endregion
 
@@ -175,5 +171,18 @@ namespace MultiMember
             return !(first == second);
         }
         #endregion
+
+        #region Operator -
+        public static Polynomial operator -(Polynomial first)
+        {
+            Polynomial result = new Polynomial(first);
+            for (int i = 0; i < result.factors.Length; i++)
+            {
+                result[i] = -result[i];
+            }
+            return result;
+        }
+        #endregion
+
     }
 }

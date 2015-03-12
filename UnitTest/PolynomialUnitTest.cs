@@ -160,16 +160,6 @@ namespace Opertor_UnitTest
         }
         #endregion
 
-        #region Indexer
-        [TestMethod]
-        public void IndexerPolynomialTestMethod1()
-        {
-            Polynomial p1 = new Polynomial(2, 5, 4, 3);
-            p1[0]=0;
-            Assert.AreEqual("5x^2+4x+3", p1.ToString());
-        }
-        #endregion
-
         #region Calculate
         [TestMethod]
         public void CalculatePolynomialTestMethod1()
