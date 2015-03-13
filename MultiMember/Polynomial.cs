@@ -20,15 +20,19 @@ namespace MultiMember
         {
             private set
             {
-                if (number >= 0 || number < factors.Length)
+                try
                 {
                     this.factors[number] = value;
                 }
+                catch { throw new FormatException("NotFoundExeption"); }
             }
             get
             {
-                if (number >= 0 || number < factors.Length) return factors[number];
-                return 0;
+                try
+                {
+                    return factors[number];
+                }
+                catch { throw new FormatException("NotFoundExeption"); }
             }
         }
         #endregion
@@ -38,6 +42,7 @@ namespace MultiMember
 
         public Polynomial(params double[] coefficients)
         {
+            if (coefficients == null) throw new NullReferenceException();
             this.factors = new double[coefficients.Length];
             coefficients.CopyTo(this.factors, 0);
             this.exponent = coefficients.Length - 1;
@@ -125,7 +130,6 @@ namespace MultiMember
 
         public static Polynomial operator +(Polynomial first, Polynomial second)
         {
-
             double[] result = new double[Math.Max(first.factors.Length, second.factors.Length)];
             first.factors.CopyTo(result, result.Length - first.factors.Length);
             for (int i = second.factors.Length - 1, y = result.Length - 1; i > -1; i--, y--)

@@ -175,8 +175,34 @@ namespace Opertor_UnitTest
             Polynomial p1 = new Polynomial(2, 2, 0, -10);
             double result = p1.Calculate(0);
             Assert.AreEqual(-10, result);
-        } 
+        }
         #endregion
 
+        #region Exeption
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void ExeptionPolynomialTestMethod1()
+        {
+            Polynomial p1 = null;
+            p1 = -p1;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void ExeptionPolynomialTestMethod2()
+        {
+            Polynomial p1 = null;
+            Polynomial p2 = null;
+            Polynomial p3 = p1 + p2;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FormatException))]
+        public void ExeptionPolynomialTestMethod3()
+        {
+            Polynomial p1 = new Polynomial(1, 2, 3);
+            double x = p1[5];
+        }
+        #endregion
     }
 }
